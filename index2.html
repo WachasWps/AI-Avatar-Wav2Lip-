@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .input-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+        .response-container {
+            margin-top: 20px;
+        }
+        .response-container p {
+            font-size: 18px;
+            color: #333;
+        }
+        .video-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .video-container video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Avatar Chatbot</h1>
+    <div class="input-container">
+        <input type="text" id="question" placeholder="Ask a question..." />
+        <button onclick="askQuestion()">Ask</button>
+    </div>
+
+    <div class="response-container" id="response-container"></div>
+
+    <div class="video-container" id="video-container"></div>
+</div>
+
+<script>
+    async function askQuestion() {
+        const question = document.getElementById('question').value;
+        if (!question) {
+            alert("Please enter a question!");
+            return;
+        }
+
+        // Show loading message
+        document.getElementById('response-container').innerHTML = "<p>Loading...</p>";
+
+        // Send the question to the Flask API
+        try {
+            const response = await fetch('http://127.0.0.1:5600/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: question })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                // Display response text
+                document.getElementById('response-container').innerHTML = `<p><strong>Response:</strong> ${data.response}</p>`;
+                
+                // Display the video
+                const videoContainer = document.getElementById('video-container');
+                videoContainer.innerHTML = `
+                    <video controls>
+                        <source src="${data.video_path}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            } else {
+                document.getElementById('response-container').innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+        } catch (error) {
+            document.getElementById('response-container').innerHTML = `<p>Error: ${error.message}</p>`;
+        }
+    }
+</script>
+
+</body>
+</html>
