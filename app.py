@@ -15,7 +15,7 @@ CORS(app)
 genai.configure(api_key="AIzaSyBtpKzAxx2pwMQ1eMO_jtRxk28rRaglVc0")  # Replace with your Gemini API key
 
 # Paths
-VIDEO_PATH = r"C:\Users\wacha\OneDrive\Desktop\Storage\avatar wav2lip\avatr.webp"  # Replace with your avatar video path
+VIDEO_PATH = "avatr.webp"  # Replace with your avatar video path
 AUDIO_PATH = "generated_audio.wav"  # Path for generated audio
 OUTPUT_VIDEO = "final_avatar_video.mp4"  # Final output path
 WAV2LIP_CHECKPOINT = "Wav2Lip/checkpoints/wav2lip_gan.pth"  # Wav2Lip checkpoint path
