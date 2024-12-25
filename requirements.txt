@@ -1,5 +1,5 @@
 librosa>=0.8.0
-numpy==1.21.2
+numpy==1.26.4
 opencv-contrib-python==4.5.5.64
 torch
 torchvision
